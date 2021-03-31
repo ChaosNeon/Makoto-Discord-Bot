@@ -1,7 +1,29 @@
 const fs = require('fs');
 const Discord = require('discord.js');  //Require the discord.js module
+const Sequelize = require('sequelize');
 const client = new Discord.Client();  //Create a new Discord client
 const { prefix, token } = require('./config.json');
+
+const sequelize = new Sequelize('database', 'user', 'password', {
+    host: 'localhost',
+    dialect: 'sqlite',
+    logging: false,
+    storage: 'database.sqlite'
+});
+
+const Tags = sequelize.define('tags', {
+    name: {
+        type: Sequelize.STRING,
+        unique: true,
+    },
+    description: Sequelize.TEXT,
+    username: Sequelize.STRING,
+    usage_count: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+        allownull: false,
+    },
+});
 
 client.commands = new Discord.Collection();
 //Creates a constant for all command files ending in .js
@@ -15,9 +37,10 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
     console.log('Lista!');
+    Tags.sync();
 });
 
-client.on('message', message => {
+client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -36,3 +59,4 @@ client.on('message', message => {
 });
 
 client.login(token);
+module.exports = { Tags }
