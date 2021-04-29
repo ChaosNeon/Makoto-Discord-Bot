@@ -1,6 +1,9 @@
-const Tags = require('../index.js');
+const { Tags } = require('../index.js');
 
-module.exports = async function (message, args) {
+module.exports = {
+    name: 'addtag',
+    description: 'Añade una etiqueta',
+    async execute (message, args) {
 
         const tagName = args[0];
         const tagDescription = args[1];
@@ -18,7 +21,9 @@ module.exports = async function (message, args) {
             if(e.name === 'SequelizeUniqueConstraintError') {
                 return message.reply('Esa etiqueta ya existe');
             }
+            console.log(e);
             return message.reply('Algo sucedio al añadir una etiqueta');
+
         }
     }
-
+}

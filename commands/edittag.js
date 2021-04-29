@@ -1,7 +1,9 @@
-const Tags = require('../index.js');
+const { Tags } = require('../index.js');
 
-module.exports.run = async(message, args) => {
-
+module.exports = {
+    name: 'edittag',
+    description: 'Edits an existing tag',
+    async execute (message, args) {
         const Tagname = args[0];
         const desc = args[1];
 
@@ -10,4 +12,5 @@ module.exports.run = async(message, args) => {
             return message.reply(`La etiqueta ${tagName} fue editada`);
         } 
         return message.reply(`No se pudo encontrar la etiqueta ${tagName}`);
+    }      
 }

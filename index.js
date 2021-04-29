@@ -25,6 +25,8 @@ const Tags = sequelize.define('tags', {
     },
 });
 
+module.exports = { Tags };
+
 client.commands = new Discord.Collection();
 //Creates a constant for all command files ending in .js
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));  
@@ -40,7 +42,7 @@ client.once('ready', () => {
     Tags.sync();
 });
 
-client.on('message', async message => {
+client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -59,4 +61,5 @@ client.on('message', async message => {
 });
 
 client.login(token);
-module.exports = { Tags }
+
+
